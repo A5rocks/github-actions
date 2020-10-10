@@ -1,4 +1,4 @@
-name: CI
+name: gh
 
 on:
   push:
@@ -8,13 +8,29 @@ on:
   workflow_dispatch:
 
 jobs:
-  example1:
+  mypy:
     runs-on: "ubuntu-latest"
     steps:
-    - name: aa
-      run: echo "example 1 passed"
-  example2:
+      - uses: "actions/checkout@v2"
+      - uses: "actions/setup-python@v2"
+        with:
+          python-version: "3.7"
+      
+      - name: "set up mypy"
+        run: pip install mypy
+      
+      - name: "check mypy"
+        run: mypy . --strict
+  black:
     runs-on: "ubuntu-latest"
     steps:
-      - name: aa
-        run: echo "example 2 passed"
+      - uses: "actions/checkout@v2"
+      - uses: "actions/setup-python@v2"
+        with:
+          python-version: "3.7"
+      
+      - name: "set up black"
+        run: pip install black
+      
+      - name: "check black"
+        run: black . --check
